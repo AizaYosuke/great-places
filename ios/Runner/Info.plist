@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>It's necessary to use a picture of the place you are registering</string>
+	<key>NSCameraUsageDescription</key>
+	<string>It's necessary to use a picture of the place you are registering</string>
 </dict>
 </plist>
