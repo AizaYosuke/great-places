@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:great_places/models/place.dart';
+import 'package:great_places/screens/map_screen.dart';
 import 'package:great_places/utils/location_util.dart';
 import 'package:location/location.dart';
 
@@ -11,17 +14,48 @@ class LocationInput extends StatefulWidget {
 
 class _LocationInputState extends State<LocationInput> {
   String _previewImageUrl = '';
+  PlaceLocation? _currentLocation;
 
   Future<void> _getCurrentUserLocation() async {
     final locData = await Location().getLocation();
 
-    final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
+    final location = PlaceLocation(
       latitude: locData.latitude!,
       longitude: locData.longitude!,
     );
 
+    _updateMapData(location);
+  }
+
+  Future<void> _selectOnMap() async {
+    final LatLng? selectedLocation = await Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (ctx) => _currentLocation == null
+            ? const MapScreen()
+            : MapScreen(initionLocation: _currentLocation!),
+      ),
+    );
+
+    if (selectedLocation == null) return;
+
+    final location = PlaceLocation(
+      latitude: selectedLocation.latitude,
+      longitude: selectedLocation.longitude,
+    );
+
+    _updateMapData(location);
+  }
+
+  void _updateMapData(PlaceLocation location) {
+    final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
+      latitude: location.latitude!,
+      longitude: location.longitude!,
+    );
+
     setState(() {
       _previewImageUrl = staticMapImageUrl;
+      _currentLocation = location;
     });
   }
 
@@ -67,7 +101,7 @@ class _LocationInputState extends State<LocationInput> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              onPressed: () {},
+              onPressed: _selectOnMap,
             ),
           ],
         )
