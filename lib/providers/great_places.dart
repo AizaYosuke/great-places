@@ -39,7 +39,6 @@ class GreatPlaces with ChangeNotifier {
 
   Future<void> addPlace(String title, File image, LatLng position) async {
     String address = await LocationUtil.getAdressFrom(position);
-    print(address);
 
     final newPlace = Place(
       id: Random().nextDouble().toString(),
@@ -58,6 +57,9 @@ class GreatPlaces with ChangeNotifier {
       'id': newPlace.id,
       'title': newPlace.title,
       'image': newPlace.image.path,
+      'latitude': newPlace.location.latitude,
+      'longitude': newPlace.location.longitude,
+      'address': newPlace.location.address,
     });
 
     notifyListeners();
