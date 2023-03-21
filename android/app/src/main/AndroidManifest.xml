@@ -4,6 +4,10 @@
         android:label="great_places"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+          android:name="com.google.android.geo.API_KEY"
+          android:value="AIzaSyC1BWq5xdAwL_ZQpIuN_z2EnKUCCbzzPY4"
+          />
         <activity
             android:name=".MainActivity"
             android:exported="true"
